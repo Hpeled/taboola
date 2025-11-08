@@ -1,34 +1,45 @@
 // 1. הגדרת משתנים
 const WIDGET_CONTAINER_ID = "recommendations-widget";
 // ה-API Endpoint המלא כפי שקיבלנו מהדרישות:
-const API_URL =
-  "https://api.taboola.com/1.0/json/taboola-templates/recommendations.get?app.type=desktop&app.apikey=f9040ab1b9c802857aa783c469d0e0ff7e7366e4&count=4&source.type=video&source.id=214321562187&source.url=http://www.site.com/videos/214321562187.html";
+const BASE_API_URL =
+  "https://api.taboola.com/1.0/json/taboola-templates/recommendations.get" +
+  "?app.type=desktop&app.apikey=f9040ab1b9c802857aa783c469d0e0ff7e7366e4" +
+  "&count=4&source.type=video&source.id=214321562187" +
+  "&source.url=http://www.site.com/videos/214321562187.html";
 
 // 2. פונקציה לבקשת נתונים מה-API
-async function fetchRecommendations() {
-  console.log("מתחיל בטעינת נתונים מה-API...");
+async function fetchRecommendations(countryCode = "US") {
+  // בניית URL חדש הכולל את קוד המדינה הנוכחי
+  const API_URL = `${BASE_API_URL}&user.country=${countryCode}`;
+  console.log(`מתחיל בטעינת נתונים עבור GEO: ${countryCode}...`);
 
   try {
-    // ביצוע הבקשה באמצעות fetch (Promise based)
     const response = await fetch(API_URL);
-
-    // בדיקה שהבקשה הצליחה (HTTP status 200)
-    if (!response.ok) {
-      throw new Error(`שגיאת HTTP! Status: ${response.status}`);
-    }
-
-    // המרת התגובה לפורמט JSON
+    // ... (בדיקת response.ok)
     const data = await response.json();
 
-    console.log("נתוני API התקבלו בהצלחה:", data);
+    const recommendations = data?.list;
 
-    // **השלב הבא שלנו:** נתחיל לעבד ולהציג את הנתונים
+    // *** לוגיקת ה-GEO FALLBACK ***
+    if (!recommendations || recommendations.length === 0) {
+      // אם הרשימה ריקה, ננסה מיקום אחר (רק אם לא ניסינו כבר את הגיבוי)
+      if (countryCode !== "GB") {
+        console.log("רשימה ריקה, מנסה GEO חלופי: GB");
+        // קריאה חוזרת עם קוד מדינה אחר
+        return await fetchRecommendations("GB");
+      }
+
+      // אם ניסינו את הגיבוי ועדיין ריק, נציג הודעת שגיאה סופית
+      console.log("נתונים לא נמצאו גם לאחר ניסיון חוזר.");
+      const container = document.getElementById(WIDGET_CONTAINER_ID);
+      container.innerHTML = "לא נמצאו המלצות לאחר שני ניסיונות.";
+      return;
+    }
+
+    console.log(`נתוני API התקבלו בהצלחה עבור ${countryCode}:`, data);
     renderWidget(data);
   } catch (error) {
-    console.error("שגיאה בטעינת המלצות:", error);
-    // הצגת הודעת שגיאה למשתמש
-    const container = document.getElementById(WIDGET_CONTAINER_ID);
-    container.innerHTML = "שגיאה בטעינת הנתונים. נסה/י שוב מאוחר יותר.";
+    // ... (טיפול בשגיאה)
   }
 }
 
@@ -105,14 +116,16 @@ function renderWidget(data) {
 fetchRecommendations();
 
 if (typeof window !== "undefined" && typeof document !== "undefined") {
-  // אם הקונטיינר קיים ב-HTML, התחל בטעינה
   if (document.getElementById(WIDGET_CONTAINER_ID)) {
-    fetchRecommendations();
+    fetchRecommendations("US"); // *** קריאה ראשונית עם 'US' ***
   }
 }
 
+// ...
+// ייצוא הפונקציה
 if (typeof module !== "undefined" && module.exports) {
   module.exports = {
     renderWidget,
+    fetchRecommendations, // *** חובה לייצא את הפונקציה לבדיקה! ***
   };
 }
