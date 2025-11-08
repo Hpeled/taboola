@@ -1,0 +1,120 @@
+/* איפוס בסיסי */
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  padding: 0;
+  direction: rtl; /* כדי לתמוך ב-RTL (עברית) */
+  background-color: #f0f0f0;
+}
+
+h1 {
+  text-align: right;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* ------------------------------------- */
+/* העיצוב של הווידג'ט עצמו (רשת רספונסיבית) */
+/* ------------------------------------- */
+
+.recommendations-grid {
+  display: grid;
+  gap: 15px; /* רווח בין הכרטיסיות */
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* דסקטופ (מסכים רחבים) */
+@media (min-width: 768px) {
+  .recommendations-grid {
+    /* הצגת 4 עמודות בדסקטופ */
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* טאבלט (מסכים בינוניים) */
+@media (min-width: 480px) and (max-width: 767px) {
+  .recommendations-grid {
+    /* הצגת 2 עמודות בטאבלט */
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* מובייל (מסכים קטנים) */
+@media (max-width: 479px) {
+  .recommendations-grid {
+    /* הצגת עמודה אחת במובייל */
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ------------------------------------- */
+/* עיצוב כרטיס המלצה יחיד */
+/* ------------------------------------- */
+
+.recommendation-card {
+  display: block; /* ודא שהקישור תופס את כל הכרטיס */
+  text-decoration: none; /* הסרת קו תחתון מהקישור */
+  color: #333;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  overflow: hidden; /* כדי שהתמונה תהיה בתוך הפינות המעוגלות */
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.recommendation-card:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.card-image-container {
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+}
+
+.card-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.card-text {
+  padding: 10px;
+  text-align: right;
+}
+
+.card-description {
+  font-size: 14px;
+  line-height: 1.4;
+  font-weight: bold;
+  margin-top: 0;
+  margin-bottom: 5px;
+  /* הגבלת טקסט לשתי שורות */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-source {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.card-type {
+  display: block;
+  font-size: 10px;
+  color: #999;
+  text-transform: uppercase;
+  border: 1px solid #eee;
+  padding: 2px 5px;
+  width: fit-content;
+  border-radius: 3px;
+  float: right; /* כדי שיופיע בצד ימין */
+}
