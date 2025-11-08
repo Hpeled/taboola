@@ -104,5 +104,15 @@ function renderWidget(data) {
 // 4. קריאה לפונקציה כדי להתחיל את התהליך (נשאיר את הקריאה הזו למטה)
 fetchRecommendations();
 
-// 4. קריאה לפונקציה כדי להתחיל את התהליך
-fetchRecommendations();
+if (typeof window !== "undefined" && typeof document !== "undefined") {
+  // אם הקונטיינר קיים ב-HTML, התחל בטעינה
+  if (document.getElementById(WIDGET_CONTAINER_ID)) {
+    fetchRecommendations();
+  }
+}
+
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = {
+    renderWidget,
+  };
+}
