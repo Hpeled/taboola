@@ -37,6 +37,13 @@ async function fetchRecommendations() {
 function renderWidget(data) {
   const container = document.getElementById(WIDGET_CONTAINER_ID);
 
+  const PLACEHOLDER_IMAGES = [
+    "img/placeholder-1.jpg",
+    "img/placeholder-2.jpg",
+    "img/placeholder-3.jpg",
+    "img/placeholder-4.jpg",
+  ];
+
   const recommendations = data?.list;
   if (!recommendations || recommendations.length === 0) {
     container.innerHTML = "לא נמצאו המלצות.";
@@ -48,12 +55,13 @@ function renderWidget(data) {
   widgetContent.className = "recommendations-grid"; // נשתמש בזה ל-CSS רספונסיבי
 
   // לולאה על כל המלצה
-  recommendations.forEach((item) => {
+  recommendations.forEach((item, index) => {
     // המידע הדרוש לנו
     const linkUrl = item.url;
-    const imageUrl = item.thumbnail[0].url || "path/to/placeholder.jpg"; // מתוך המערך thumbnail, ניקח את ה-URL הראשון
+    const imageUrl = item.thumbnail[0]?.url;
     const title = item.name;
     const description = item.description; // יכול להיות שזה מה שנרצה להציג כטקסט הראשי
+    const fallbackImage = PLACEHOLDER_IMAGES[index % PLACEHOLDER_IMAGES.length];
 
     // נניח שכרגע כל מה שחוזר מה-API הזה הוא 'Sponsored', אבל נהיה מוכנים ל-Organic
     const isSponsored = item.origin === "sponsored";
@@ -69,7 +77,7 @@ function renderWidget(data) {
     // בניית ה-HTML הפנימי של הכרטיס
     card.innerHTML = `
             <div class="card-image-container">
-                <img src="${imageUrl}" alt="${title}" class="card-image">
+                <img src="${imageUrl}" alt="${title}" class="card-image" onerror="this.onerror=null; this.src='${fallbackImage}';">
             </div>
             <div class="card-text">
                 <p class="card-description">${description}</p>

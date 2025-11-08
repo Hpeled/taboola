@@ -80,6 +80,16 @@ h1 {
   width: 100%;
   height: auto;
   display: block;
+  min-height: 100px;
+  /* סגנון אם התמונה שבורה: רקע אפור וטקסט חסר */
+  background-color: #eee;
+  color: #888;
+  text-align: center;
+  line-height: 100px; /* ממורכז אנכית אם התמונה נכשלה */
+  font-size: 14px;
+}
+card-image::after {
+  content: attr(alt);
 }
 
 .card-text {
