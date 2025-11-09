@@ -16,7 +16,7 @@ const mockApiData = {
       thumbnail: [{ url: "http://image.com/organic2.jpg" }],
       name: "Organic Content",
       description: "This is an organic article description.",
-      origin: "organic", // Origin 'organic'
+      origin: "organic", 
       branding: "My Site",
     },
 

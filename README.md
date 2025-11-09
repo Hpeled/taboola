@@ -3,8 +3,8 @@ This project implements a fully responsive, client-side recommendations widget u
 
 🛠️ Setup and Running the Project
 
-1. Installation
-   The main application does not require a backend, but the testing environment requires Node.js, npm, and Jest packages.
+Installation
+The main application does not require a backend, but the testing environment requires Node.js, npm, and Jest packages.
 
 Open your terminal in the project root directory and run:
 
@@ -12,7 +12,7 @@ Bash
 
 # Install development dependencies (Jest, JSDOM, http-server)
 
-npm install 2. Running the Widget (Front End)
+npm install Running the Widget (Front End)
 You have two options for viewing the widget in a browser:
 
 A. Recommended: Using npm start (Local Server)
