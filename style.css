@@ -1,130 +1,154 @@
-/* איפוס בסיסי */
 body {
   font-family: Arial, sans-serif;
-  margin: 20px;
-  padding: 0;
-  direction: rtl; /* כדי לתמוך ב-RTL (עברית) */
-  background-color: #f0f0f0;
+  background-color: #242424;
+  color: #f0f0f0;
+  margin: 0;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
-h1 {
-  text-align: right;
-  color: #333;
-  margin-bottom: 20px;
+#recommendations-widget {
+  max-width: 1200px;
+  margin: 40px auto;
+  background-color: #333333;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
-
-/* ------------------------------------- */
-/* העיצוב של הווידג'ט עצמו (רשת רספונסיבית) */
-/* ------------------------------------- */
 
 .recommendations-grid {
   display: grid;
-  gap: 15px; /* רווח בין הכרטיסיות */
-  padding: 10px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
 }
-
-/* דסקטופ (מסכים רחבים) */
-@media (min-width: 768px) {
-  .recommendations-grid {
-    /* הצגת 4 עמודות בדסקטופ */
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-/* טאבלט (מסכים בינוניים) */
-@media (min-width: 480px) and (max-width: 767px) {
-  .recommendations-grid {
-    /* הצגת 2 עמודות בטאבלט */
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* מובייל (מסכים קטנים) */
-@media (max-width: 479px) {
-  .recommendations-grid {
-    /* הצגת עמודה אחת במובייל */
-    grid-template-columns: 1fr;
-  }
-}
-
-/* ------------------------------------- */
-/* עיצוב כרטיס המלצה יחיד */
-/* ------------------------------------- */
 
 .recommendation-card {
-  display: block; /* ודא שהקישור תופס את כל הכרטיס */
-  text-decoration: none; /* הסרת קו תחתון מהקישור */
-  color: #333;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  overflow: hidden; /* כדי שהתמונה תהיה בתוך הפינות המעוגלות */
-  transition: transform 0.2s, box-shadow 0.2s;
+  background-color: #424242;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .recommendation-card:hover {
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  transform: translateY(-2px);
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
 }
 
 .card-image-container {
+  position: relative;
   width: 100%;
-  height: auto;
+  padding-bottom: 56.25%;
   overflow: hidden;
 }
 
 .card-image {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: auto;
-  display: block;
-  min-height: 100px;
-  /* סגנון אם התמונה שבורה: רקע אפור וטקסט חסר */
-  background-color: #eee;
-  color: #888;
-  text-align: center;
-  line-height: 100px; /* ממורכז אנכית אם התמונה נכשלה */
-  font-size: 14px;
-}
-card-image::after {
-  content: attr(alt);
+  height: 100%;
+  object-fit: cover;
 }
 
-.card-text {
-  padding: 10px;
-  text-align: right;
+.video-icon {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 5px 8px;
+  border-radius: 4px;
+  font-size: 0.8em;
+  z-index: 1;
 }
 
-.card-description {
-  font-size: 14px;
-  line-height: 1.4;
+.card-meta-top {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 5px 8px;
+  border-radius: 4px;
+  z-index: 1;
+}
+
+.card-time {
+  font-size: 0.8em;
+  color: #cccccc;
+}
+
+.card-content {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.card-title {
+  font-size: 1.1em;
   font-weight: bold;
   margin-top: 0;
-  margin-bottom: 5px;
-  /* הגבלת טקסט לשתי שורות */
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  margin-bottom: 10px;
+  color: #ffffff;
+  line-height: 1.4;
 }
 
 .card-source {
-  font-size: 12px;
-  color: #666;
-  margin-bottom: 5px;
+  font-size: 0.9em;
+  color: #aaaaaa;
+  margin-bottom: 15px;
 }
 
-.card-type {
-  display: block;
-  font-size: 10px;
-  color: #999;
-  text-transform: uppercase;
-  border: 1px solid #eee;
-  padding: 2px 5px;
-  width: fit-content;
-  border-radius: 3px;
-  float: right; /* כדי שיופיע בצד ימין */
+.card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.action-button {
+  background-color: #555555;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.8em;
+  transition: background-color 0.2s ease;
+}
+
+.action-button:hover {
+  background-color: #666666;
+}
+
+@media (max-width: 1024px) {
+  .recommendations-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  #recommendations-widget {
+    margin: 20px auto;
+    padding: 15px;
+  }
+  .recommendations-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .recommendations-grid {
+    grid-template-columns: 1fr;
+  }
 }
